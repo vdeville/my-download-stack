@@ -1,0 +1,28 @@
+version: '3'
+services:
+  couchpotato:
+    image: linuxserver/couchpotato:latest
+    container_name: couchpotato
+    environment:
+      TZ: Europe/Paris
+    volumes:
+      - couchpotato:/config
+      - /home/downloads/:/downloads
+      - /home/plex/Films/:/movies
+    ports :
+      - 5050:5050
+
+  ombi:
+      image: linuxserver/ombi:latest
+      container_name: omby
+      volumes:
+        - /etc/localtime:/etc/localtime:ro
+        - ombi:/config
+      ports :
+        - 3579:3579
+
+volumes:
+  couchpotato:
+    driver: local
+  ombi:
+    driver: local
