@@ -2,6 +2,7 @@ version: '3'
 services:
   couchpotato:
     image: linuxserver/couchpotato:latest
+    restart: always
     container_name: couchpotato
     environment:
       TZ: Europe/Paris
@@ -14,6 +15,7 @@ services:
 
   ombi:
       image: linuxserver/ombi:latest
+      restart: always
       container_name: omby
       volumes:
         - /etc/localtime:/etc/localtime:ro
@@ -23,6 +25,7 @@ services:
 
   plex:
     image: plexinc/pms-docker:latest
+    restart: always
     container_name: plex
     environment:
       TZ: Europe/Paris
