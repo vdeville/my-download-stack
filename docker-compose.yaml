@@ -15,7 +15,7 @@ services:
       - couchpotato:/config
       - /home/downloads/:/downloads
       - /home/plex/Films/:/movies
-    ports :
+    ports:
       - 5050:5050
 
   ombi:
@@ -25,7 +25,7 @@ services:
       volumes:
         - /etc/localtime:/etc/localtime:ro
         - ombi:/config
-      ports :
+      ports:
         - 3579:3579
 
   deluge:
@@ -37,8 +37,8 @@ services:
       volumes:
         - /home/plex/Films/:/downloads
         - deluge:/config
-      ports :
-        - 8080:8080
+      ports:
+        - 8112:8112
 
   nzbget:
       image: linuxserver/nzbget:latest
@@ -49,7 +49,7 @@ services:
       volumes:
         - /home/plex/Films/:/downloads
         - nzbget:/config
-      ports :
+      ports:
         - 6789:6789
 
   plex:
@@ -62,7 +62,7 @@ services:
       - plex:/config
       - /tmp/plex/transcode/:/transcode
       - /home/plex/Films/:/data
-    ports :
+    ports:
       - 32400:32400/tcp
       - 3005:3005/tcp
       - 8324:8324/tcp
