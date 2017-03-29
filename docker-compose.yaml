@@ -4,6 +4,10 @@ services:
     image: linuxserver/couchpotato:latest
     restart: always
     container_name: couchpotato
+    links:
+      - ombi
+      - deluge
+      - plex
     environment:
       TZ: Europe/Paris
     volumes:
@@ -17,11 +21,31 @@ services:
       image: linuxserver/ombi:latest
       restart: always
       container_name: omby
+      links:
+        - couchpotato
+        - deluge
+        - plex
       volumes:
         - /etc/localtime:/etc/localtime:ro
         - ombi:/config
       ports :
         - 3579:3579
+
+  deluge:
+      image: linuxserver/deluge:latest
+      restart: always
+      container_name: omby
+      links:
+        - couchpotato
+        - ombi
+        - plex
+      environment:
+        TZ: Europe/Paris
+      volumes:
+        - /home/plex/Films/:/downloads
+        - deluge:/config
+      ports :
+        - 8080:8080
 
   plex:
     image: plexinc/pms-docker:latest
@@ -29,6 +53,10 @@ services:
     container_name: plex
     environment:
       TZ: Europe/Paris
+    links:
+      - couchpotato
+      - ombi
+      - deluge
     volumes:
       - plex:/config
       - /tmp/plex/transcode/:/transcode
@@ -46,6 +74,8 @@ services:
 
 volumes:
   couchpotato:
+    driver: local
+  deluge:
     driver: local
   ombi:
     driver: local
