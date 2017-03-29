@@ -8,6 +8,7 @@ services:
       - ombi
       - deluge
       - plex
+      - nzbget
     environment:
       TZ: Europe/Paris
     volumes:
@@ -21,10 +22,6 @@ services:
       image: linuxserver/ombi:latest
       restart: always
       container_name: omby
-      links:
-        - couchpotato
-        - deluge
-        - plex
       volumes:
         - /etc/localtime:/etc/localtime:ro
         - ombi:/config
@@ -34,11 +31,7 @@ services:
   deluge:
       image: linuxserver/deluge:latest
       restart: always
-      container_name: omby
-      links:
-        - couchpotato
-        - ombi
-        - plex
+      container_name: deluge
       environment:
         TZ: Europe/Paris
       volumes:
@@ -47,16 +40,24 @@ services:
       ports :
         - 8080:8080
 
+  nzbget:
+      image: linuxserver/nzbget:latest
+      restart: always
+      container_name: nzbget
+      environment:
+        TZ: Europe/Paris
+      volumes:
+        - /home/plex/Films/:/downloads
+        - nzbget:/config
+      ports :
+        - 6789:6789
+
   plex:
     image: plexinc/pms-docker:latest
     restart: always
     container_name: plex
     environment:
       TZ: Europe/Paris
-    links:
-      - couchpotato
-      - ombi
-      - deluge
     volumes:
       - plex:/config
       - /tmp/plex/transcode/:/transcode
@@ -80,4 +81,6 @@ volumes:
   ombi:
     driver: local
   plex:
+    driver: local
+  nzbget:
     driver: local
