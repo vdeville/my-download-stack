@@ -58,6 +58,7 @@ services:
     container_name: plex
     environment:
       TZ: Europe/Paris
+      PLEX_CLAIM: ''
     volumes:
       - plex:/config
       - /tmp/plex/transcode/:/transcode
@@ -73,6 +74,17 @@ services:
       - 32413:32413/udp
       - 32414:32414/udp
 
+  jdownloader:
+      image: mythevalentinus/myjdownloader-docker:latest
+      restart: always
+      container_name: jdownloader
+      environment:
+        JDEMAIL: ''
+        JDPASSWORD: ''
+      volumes:
+        - jdownloader:/opt/JDownloader/cfg
+        - /home/plex/Films/:/root/Downloads
+
 volumes:
   couchpotato:
     driver: local
@@ -83,4 +95,6 @@ volumes:
   plex:
     driver: local
   nzbget:
+    driver: local
+  jdownloader:
     driver: local
