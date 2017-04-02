@@ -6,7 +6,7 @@ services:
     container_name: couchpotato
     links:
       - ombi
-      - deluge
+      - tranmission
       - plex
       - nzbget
     environment:
@@ -28,17 +28,20 @@ services:
       ports:
         - 3579:3579
 
-  deluge:
-      image: linuxserver/deluge:latest
+  tranmission:
+      image: linuxserver/transmission:latest
       restart: always
-      container_name: deluge
+      container_name: tranmission
       environment:
         TZ: Europe/Paris
       volumes:
-        - /home/plex/Films/:/downloads
-        - deluge:/config
+        - /home/plex/:/downloads
+        - tranmission:/config
+        - tranmission:/watch
       ports:
-        - 8112:8112
+        - 9091:9091
+        - 51413:51413
+        - 51413:51413/udp
 
   nzbget:
       image: linuxserver/nzbget:latest
@@ -47,7 +50,7 @@ services:
       environment:
         TZ: Europe/Paris
       volumes:
-        - /home/plex/Films/:/downloads
+        - /home/plex/:/downloads
         - nzbget:/config
       ports:
         - 6789:6789
@@ -62,7 +65,7 @@ services:
     volumes:
       - plex:/config
       - /tmp/plex/transcode/:/transcode
-      - /home/plex/Films/:/data
+      - /home/plex/:/data
     ports:
       - 32400:32400/tcp
       - 3005:3005/tcp
@@ -83,12 +86,12 @@ services:
         JDPASSWORD: ''
       volumes:
         - jdownloader:/opt/JDownloader/cfg
-        - /home/plex/Films/:/root/Downloads
+        - /home/plex/:/root/Downloads
 
 volumes:
   couchpotato:
     driver: local
-  deluge:
+  tranmission:
     driver: local
   ombi:
     driver: local
